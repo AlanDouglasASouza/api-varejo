@@ -1,0 +1,17 @@
+{
+  "name": "server-pg",
+  "version": "1.0.0",
+  "description": "App connect database postgres.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Alan A. D Souza",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "pg": "^8.8.0"
+  }
+}
