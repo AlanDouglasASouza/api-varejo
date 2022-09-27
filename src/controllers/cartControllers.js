@@ -29,34 +29,6 @@ exports.cartControllers = {
         }
         res.status(201).json({ message: "User created" });
     },
-    getTotalCart: async (req, res) => {
-        const id = req.params.id;
-
-        const getTotalCart = await service.getQuantity(id);
-
-        if (getTotalCart.status > 300) {
-            res.status(getTotalCart.status).json({
-                message: getTotalCart.error,
-            });
-
-            return;
-        }
-        res.status(200).send(getTotalCart.data.response);
-    },
-    getTotalPrice: async (req, res) => {
-        const id = req.params.id;
-
-        const getTotalPrice = await service.getTotalPrice(id);
-
-        if (getTotalPrice.status > 300) {
-            res.status(getTotalPrice.status).json({
-                message: getTotalPrice.error,
-            });
-
-            return;
-        }
-        res.status(200).send(getTotalPrice.data.response);
-    },
     deleteCart: async (req, res) => {
         const id = req.params.id;
 

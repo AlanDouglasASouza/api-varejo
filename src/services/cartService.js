@@ -13,6 +13,20 @@ class CartServices {
             return { error: data.err };
         }
 
+        const totalCart = await this.#app.carts.quantityCardByUser(id);
+        const totalPrice = await this.#app.carts.totalPriceCartUser(id);
+
+        if (totalCart.status === "ERROR" || totalPrice.status === "ERROR") {
+            return { status: 500, error: totalCart.err };
+        }
+
+        const totalCartUsers = {
+            quantityProducts: await totalCart.response[0].sum,
+            totalPrice: await totalPrice.response[0].sum,
+        };
+
+        data.response[0].detailsCartUsers = totalCartUsers;
+
         return { error: null, data: data };
     }
 
@@ -32,26 +46,6 @@ class CartServices {
         }
 
         return createCart;
-    }
-
-    async getQuantity(id) {
-        const quantity = await this.#app.carts.quantityCardByUser(id);
-
-        if (quantity.status === "ERROR") {
-            return { status: 500, error: data.err };
-        }
-
-        return { error: null, data: quantity };
-    }
-
-    async getTotalPrice(id) {
-        const quantity = await this.#app.carts.totalPriceCartUser(id);
-
-        if (quantity.status === "ERROR") {
-            return { status: 500, error: data.err };
-        }
-
-        return { error: null, data: quantity };
     }
 
     async delete(id) {

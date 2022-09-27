@@ -5,6 +5,7 @@ const users = require("../controllers/userControllers.js");
 const admins = require("../controllers/adminControllers.js");
 const clients = require("../controllers/clientControllers.js");
 const carts = require("../controllers/cartControllers.js");
+const orders = require("../controllers/orderControllers.js");
 
 router.get("/products/", products.productsControllers.getProducts);
 router.post("/products", products.productsControllers.insertProduct);
@@ -27,9 +28,10 @@ router.put("/clients/:id", clients.clientControllers.updateClient);
 router.delete("/clients/:id", clients.clientControllers.deleteClient);
 
 router.get("/carts/:id", carts.cartControllers.getCarts);
-router.get("/carts/products/:id", carts.cartControllers.getTotalCart);
-router.get("/carts/price/:id", carts.cartControllers.getTotalPrice);
 router.post("/carts", carts.cartControllers.insertCarts);
 router.delete("/carts/:id", clients.clientControllers.deleteClient);
+
+router.get("/orders", orders.orderControllers.getOrders);
+router.post("/orders", orders.orderControllers.insertOrder);
 
 module.exports = router;

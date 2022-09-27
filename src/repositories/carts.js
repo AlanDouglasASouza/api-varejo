@@ -23,16 +23,38 @@ class Carts {
 
     async createCart(data) {
         try {
+            const idOrder = {};
             const client = await this.#db;
+            const orderId = await client.query(
+                `
+                SELECT cart_orders_id FROM varejo.carts WHERE users_id = $1 AND selected = $2;
+            `,
+                [data.userId, true]
+            );
 
-            const sql = `INSERT INTO varejo.carts (users_id, products_id, amount, selected, status_id)
-                 VALUES ($1, $2, $3, $4, $5)`;
+            if (orderId.rows.length < 1) {
+                const date = new Date();
+                const cartOrder = await client.query(
+                    `
+                        INSERT INTO varejo.cart_orders (created_at) VALUES ($1) RETURNING id;
+                    `,
+                    [date]
+                );
+
+                idOrder.id = cartOrder.rows[0].id;
+            } else {
+                idOrder.id = orderId.rows[0].cart_orders_id;
+            }
+
+            const sql = `INSERT INTO varejo.carts (users_id, products_id, amount, selected, status_id, cart_orders_id)
+                 VALUES ($1, $2, $3, $4, $5, $6)`;
             const values = [
                 data.userId,
                 data.productId,
                 data.amount,
                 true,
                 "No carrinho",
+                idOrder.id,
             ];
 
             const user = await client.query(sql, values);
@@ -91,19 +113,3 @@ class Carts {
 }
 
 module.exports = Carts;
-
-/* 
-INSERT INTO varejo.status VALUES (default, 'No carrinho');
-
-SELECT * FROM varejo.carts;
-
-SELECT COUNT(active) FROM varejo.users WHERE active = 'true';
-
-SELECT *FROM varejo.users;
-
-SELECT COUNT(selected) FROM varejo.carts WHERE users_id = '6e8657e4-15ef-4ed2-baa0-babfad97f942' AND selected = 'true';
-
-select * from varejo.products;
-
-SELECT SUM(price) FROM varejo.products where brands_id = 'Lacost';
-*/
