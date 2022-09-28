@@ -3,6 +3,8 @@ const Users = require("./repositories/users.js");
 const Admins = require("./repositories/admins.js");
 const Clients = require("./repositories/clients.js");
 const Carts = require("./repositories/carts.js");
+const Orders = require("./repositories/orders.js");
+const Services = require("./services/index.js");
 
 class App {
     #db;
@@ -11,6 +13,8 @@ class App {
     admins;
     clients;
     carts;
+    orders;
+    services;
 
     constructor() {
         this.#db = require("./repositories/index.js");
@@ -19,6 +23,8 @@ class App {
         this.admins = new Admins(this.#db);
         this.clients = new Clients(this.#db);
         this.carts = new Carts(this.#db);
+        this.orders = new Orders(this.#db);
+        this.services = new Services(this.#db);
     }
 }
 
